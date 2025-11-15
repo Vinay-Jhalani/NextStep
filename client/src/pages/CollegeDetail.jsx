@@ -33,15 +33,11 @@ const CollegeDetail = () => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    // Scroll to top when component mounts or id changes
-    window.scrollTo(0, 0);
-
     fetchCollegeDetails();
     fetchReviews();
     checkIfSaved();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
   const checkIfSaved = async () => {
     if (!user) return;
     try {

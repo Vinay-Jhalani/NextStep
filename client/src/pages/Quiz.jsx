@@ -11,12 +11,18 @@ const Quiz = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
-  const { user, updateUser } = useContext(AuthContext);
+  const { user, updateUser, loading: authLoading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Wait for auth to resolve. If not logged in, redirect to login.
+    if (authLoading) return;
+    if (!user) {
+      navigate("/login", { replace: true });
+      return;
+    }
     fetchQuiz();
-  }, []);
+  }, [user, authLoading, navigate]);
 
   const fetchQuiz = async () => {
     try {
@@ -252,15 +258,7 @@ const Quiz = () => {
           </div>
         </div>
 
-        {/* Help Text */}
-        {!user && (
-          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-yellow-800 text-center">
-              You need to be logged in to submit the quiz. Your progress is
-              saved!
-            </p>
-          </div>
-        )}
+        {/* Help Text removed - login is required to access this page */}
       </div>
     </div>
   );
