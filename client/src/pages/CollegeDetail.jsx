@@ -279,7 +279,25 @@ const CollegeDetail = () => {
             {activeTab === "programs" && (
               <div className="card">
                 <h2 className="text-2xl font-bold mb-4">Programs Offered</h2>
-                {college.offeredCourses?.length > 0 ? (
+
+                {/* Prefer `programs_offered` (flat program objects) used on the list page,
+                    otherwise fall back to the older `offeredCourses` shape. */}
+                {college.programs_offered &&
+                college.programs_offered.length > 0 ? (
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap gap-2">
+                      {college.programs_offered.map((program) => (
+                        <span
+                          key={program._id || program.program_name}
+                          className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded"
+                        >
+                          {program.program_name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : college.offeredCourses &&
+                  college.offeredCourses.length > 0 ? (
                   <div className="space-y-4">
                     {college.offeredCourses.map((courseOffering, idx) => (
                       <div
